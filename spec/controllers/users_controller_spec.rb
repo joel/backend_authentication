@@ -42,6 +42,18 @@ RSpec.describe UsersController do
   # UsersController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
+  let(:user) { create(:user) }
+
+  let(:valid_headers) do
+    {
+      "Authorization" => "Bearer #{JWT.encode({ user_id: user.id }, Rails.application.credentials.secret_key_base, 'HS256')}"
+    }
+  end
+
+  before do
+    request.headers["Authorization"] = valid_headers["Authorization"]
+  end
+
   describe "GET #index" do
     it "returns a success response" do
       User.create! valid_attributes

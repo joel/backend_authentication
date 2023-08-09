@@ -18,6 +18,6 @@ class ApplicationController < ActionController::API
 
     Current.user = User.find(decoded[0]["user_id"]) if decoded
 
-    nil
+    render json: { error: "unauthorized" }, status: :unauthorized unless Current.user
   end
 end

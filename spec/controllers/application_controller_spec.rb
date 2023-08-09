@@ -27,6 +27,7 @@ RSpec.describe ApplicationController do
 
     it "set the authorized user" do
       expect(Current).to receive(:user=).with(user) # rubocop:disable RSpec/MessageSpies
+      allow(Current).to receive(:user).and_return(user)
       get :index
       expect(response).to have_http_status(:ok)
     end
@@ -36,7 +37,7 @@ RSpec.describe ApplicationController do
     it "does nothing" do
       expect(Current).not_to receive(:user=) # rubocop:disable RSpec/MessageSpies
       get :index
-      expect(response).to have_http_status(:ok)
+      expect(response).to have_http_status(:unauthorized)
     end
   end
 
