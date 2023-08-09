@@ -30,11 +30,11 @@ RSpec.describe UsersController do
   # User. As you add validations to User, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    skip("Add a hash of attributes valid for your model")
+    build(:user).attributes.except("id", "updated_at", "created_at")
   end
 
   let(:invalid_attributes) do
-    skip("Add a hash of attributes invalid for your model")
+    valid_attributes.except("name", "id", "updated_at", "created_at")
   end
 
   # This should return the minimal set of values that should be in the session
@@ -69,7 +69,7 @@ RSpec.describe UsersController do
       it "renders a JSON response with the new user" do
         post :create, params: { user: valid_attributes }, session: valid_session
         expect(response).to have_http_status(:created)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.location).to eq(user_url(User.last))
       end
     end
@@ -78,7 +78,7 @@ RSpec.describe UsersController do
       it "renders a JSON response with errors for the new user" do
         post :create, params: { user: invalid_attributes }, session: valid_session
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
       end
     end
   end
@@ -86,30 +86,32 @@ RSpec.describe UsersController do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) do
-        skip("Add a hash of attributes valid for your model")
+        build(:user).attributes.except("id", "updated_at", "created_at")
       end
 
       it "updates the requested user" do
         user = User.create! valid_attributes
-        put :update, params: { id: user.to_param, user: new_attributes }, session: valid_session
-        user.reload
-        skip("Add assertions for updated state")
+
+        expect do
+          put :update, params: { id: user.to_param, user: new_attributes }, session: valid_session
+        end.to change { user.reload.name }.from(user.name).to(new_attributes["name"])
       end
 
       it "renders a JSON response with the user" do
         user = User.create! valid_attributes
         put :update, params: { id: user.to_param, user: new_attributes }, session: valid_session
         expect(response).to have_http_status(:ok)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
       end
     end
 
     context "with invalid params" do
       it "renders a JSON response with errors for the user" do
-        user = User.create! valid_attributes
+        user, another_user = create_list(:user, 2)
+        invalid_attributes = { email: another_user.email }
         put :update, params: { id: user.to_param, user: invalid_attributes }, session: valid_session
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
       end
     end
   end
