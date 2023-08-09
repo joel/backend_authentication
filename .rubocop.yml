@@ -1,0 +1,17 @@
+require:
+  - rubocop-factory_bot
+  - rubocop-gitlab-security
+  - rubocop-rspec
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rake
+
+inherit_from:
+  - .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - 'vendor/**/*'
+  NewCops: enable
+  TargetRailsVersion: 7.0
+  TargetRubyVersion: 3.2
