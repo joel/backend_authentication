@@ -13,6 +13,8 @@ module JwtWebToken
   def jwt_decode(token:)
     return unless token
 
-    JWT.decode(token, Rails.application.credentials.secret_key_base, true, { algorithm: "HS256" })
+    payload, options = JWT.decode(token, Rails.application.credentials.secret_key_base, true, { algorithm: "HS256" })
+
+    JwtToken.new(payload:, options:)
   end
 end
