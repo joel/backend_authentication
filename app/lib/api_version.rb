@@ -2,7 +2,7 @@
 
 class ApiVersion
   DEFAULT_VERSION = 1
-  API_REGEXP = %r{application/x-api-v(?<version>\d+\.?\d*)\+json}
+  API_REGEXP = %r{application\/x-api-v(?<version>\d+(?<minor>\.\d*)?)\+json}
 
   def initialize(version)
     @version = version

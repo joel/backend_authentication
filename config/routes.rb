@@ -8,10 +8,10 @@ Rails.application.routes.draw do
   # constraints subdomain: "api" do
   namespace :api do
     scope module: :v2, constraints: ApiVersion.new(2) do
-      resources :users
+      resources :users, only: :index
     end
     scope module: :v1, constraints: ApiVersion.new(1) do
-      resources :users
+      resources :users, only: :index
     end
   end
   # end
