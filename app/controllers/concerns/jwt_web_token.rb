@@ -16,5 +16,7 @@ module JwtWebToken
     payload, options = JWT.decode(token, Rails.application.credentials.secret_key_base, true, { algorithm: "HS256" })
 
     JwtToken.new(payload:, options:)
+  rescue JWT::DecodeError
+    nil
   end
 end

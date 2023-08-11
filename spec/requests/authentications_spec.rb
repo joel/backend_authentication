@@ -35,13 +35,13 @@ RSpec.describe "/login" do
 
   let(:invalid_headers) do
     {
-      "Authorization" => "Bearer #{JWT.encode({ user_id: 42 }, Rails.application.credentials.secret_key_base, 'HS256')}"
+      "Authorization" => "Bearer WRONG_TOKEN"
     }
   end
 
   describe "POST /create" do
     context "with valid parameters" do
-      it "logged in the User" do
+      it "returns a valid token" do
         post login_url, params: valid_attributes, headers: valid_headers, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including("application/json"))

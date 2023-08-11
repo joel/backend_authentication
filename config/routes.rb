@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   post "/login", to: "authentication#create"
 
+  # constraints subdomain: "api" do
   namespace :api do
     scope module: :v2, constraints: ApiVersion.new(2) do
       resources :users
@@ -13,4 +14,5 @@ Rails.application.routes.draw do
       resources :users
     end
   end
+  # end
 end

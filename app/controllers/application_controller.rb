@@ -12,9 +12,7 @@ class ApplicationController < ActionController::API
   private
 
   def authenticate_request
-    header  = request.headers["Authorization"]
-    token   = header.split.last if header
-    decoded = jwt_decode(token:)
+    decoded = jwt_decode(token: request.headers["Authorization"]&.split&.last)
 
     unless decoded
       render json: { error: "unauthorized, invalid token" }, status: :unauthorized

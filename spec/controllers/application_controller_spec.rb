@@ -13,49 +13,49 @@ RSpec.describe ApplicationController do
     routes.draw { get "index" => "anonymous#index" }
   end
 
-  context "with authorization header" do
-    let(:user) { create(:user) }
-    let(:valid_headers) do
-      {
-        "Authorization" => "Bearer #{JWT.encode({ user_id: user.id }, Rails.application.credentials.secret_key_base, 'HS256')}"
-      }
-    end
-
+  context "with token" do
     before do
-      request.headers["Authorization"] = valid_headers["Authorization"]
+      request.headers["Authorization"] = headers["Authorization"]
     end
 
-    it "set the authorized user" do
-      expect(Current).to receive(:user=).with(user) # rubocop:disable RSpec/MessageSpies
-      allow(Current).to receive(:user).and_return(user)
-      get :index
-      expect(response).to have_http_status(:ok)
+    context "with valid token" do
+      let(:user) { create(:user) }
+      let(:headers) do
+        {
+          "Authorization" => "Bearer #{JWT.encode({ user_id: user.id }, Rails.application.credentials.secret_key_base, 'HS256')}"
+        }
+      end
+
+      it "authenticate the user and set Current.user" do
+        expect(Current).to receive(:user=).with(user)
+        allow(Current).to receive(:user).and_return(user)
+        get :index
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "with invalid token" do
+      let(:headers) do
+        {
+          "Authorization" => "Bearer WRONG_TOKEN"
+        }
+      end
+
+      it "does nothing" do
+        expect(Current).not_to receive(:user=)
+        get :index
+        expect(response).to have_http_status(:unauthorized)
+        expect(response.parsed_body).to match({ "error" => "unauthorized, invalid token" })
+      end
     end
   end
 
-  context "without authorization header" do
+  context "without token" do
     it "does nothing" do
-      expect(Current).not_to receive(:user=) # rubocop:disable RSpec/MessageSpies
+      expect(Current).not_to receive(:user=)
       get :index
       expect(response).to have_http_status(:unauthorized)
-    end
-  end
-
-  context "with invalid authorization header" do
-    let(:valid_headers) do
-      {
-        "Authorization" => "Bearer #{JWT.encode({ user_id: 42 }, Rails.application.credentials.secret_key_base, 'HS256')}"
-      }
-    end
-
-    before do
-      request.headers["Authorization"] = valid_headers["Authorization"]
-    end
-
-    it "does nothing" do
-      expect(Current).not_to receive(:user=) # rubocop:disable RSpec/MessageSpies
-      get :index
-      expect(response).to have_http_status(:not_found)
+      expect(response.parsed_body).to match({ "error" => "unauthorized, invalid token" })
     end
   end
 end
