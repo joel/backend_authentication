@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UserSerializer
-  include ActiveModel::Serialization
+  include ActiveModel::Serializers::JSON
 
   attr_accessor :name
 

@@ -54,7 +54,7 @@ RSpec.describe "/login" do
         post login_url, params: invalid_attributes, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unauthorized)
         expect(response.content_type).to match(a_string_including("application/json"))
-        expect(response.parsed_body).to match({ "error" => "unauthorized" })
+        expect(response.parsed_body).to match({ "error" => "unauthorized, identification email password failed!" })
       end
     end
 
@@ -63,7 +63,7 @@ RSpec.describe "/login" do
         post login_url, params: valid_attributes, headers: invalid_headers, as: :json
         expect(response).to have_http_status(:unauthorized)
         expect(response.content_type).to match(a_string_including("application/json"))
-        expect(response.parsed_body).to match({ "error" => "unauthorized" })
+        expect(response.parsed_body).to match({ "error" => "unauthorized, identification email password failed!" })
       end
     end
   end
