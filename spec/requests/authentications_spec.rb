@@ -7,7 +7,17 @@ RSpec.describe "/login" do
     attributes_for(:user).slice(:email, :password)
   end
 
-  let(:user) do
+  let(:valid_attributes) do
+    attributes
+  end
+
+  let(:invalid_attributes) do
+    attributes_for(:user).slice(:email, :password)
+  end
+
+  let(:valid_headers) { {} }
+
+  before do
     User.create!(
       build(:user).attributes.merge(
         {
@@ -19,28 +29,8 @@ RSpec.describe "/login" do
     )
   end
 
-  let(:valid_attributes) do
-    attributes
-  end
-
-  let(:invalid_attributes) do
-    attributes_for(:user).slice(:email, :password)
-  end
-
-  let(:valid_headers) do
-    {
-      "Authorization" => "Bearer #{JWT.encode({ user_id: user.id }, Rails.application.credentials.secret_key_base, 'HS256')}"
-    }
-  end
-
-  let(:invalid_headers) do
-    {
-      "Authorization" => "Bearer WRONG_TOKEN"
-    }
-  end
-
   describe "POST /create" do
-    context "with valid parameters" do
+    context "with valid identification parameters" do
       it "returns a valid token" do
         post login_url, params: valid_attributes, headers: valid_headers, as: :json
         expect(response).to have_http_status(:ok)
@@ -49,18 +39,9 @@ RSpec.describe "/login" do
       end
     end
 
-    context "with invalid headers" do
-      it "renders a JSON response with errors for the new user" do
+    context "with invalid identification parameters" do
+      it "renders a JSON response with errors" do
         post login_url, params: invalid_attributes, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:unauthorized)
-        expect(response.content_type).to match(a_string_including("application/json"))
-        expect(response.parsed_body).to match({ "error" => "unauthorized, identification email password failed!" })
-      end
-    end
-
-    context "with invalid parameters" do
-      it "renders a JSON response with errors for the new user" do
-        post login_url, params: valid_attributes, headers: invalid_headers, as: :json
         expect(response).to have_http_status(:unauthorized)
         expect(response.content_type).to match(a_string_including("application/json"))
         expect(response.parsed_body).to match({ "error" => "unauthorized, identification email password failed!" })

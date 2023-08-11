@@ -19,7 +19,7 @@ class ApplicationController < ActionController::API
       return
     end
 
-    user = User.find(decoded["user_id"])
+    user = User.find_by(id: decoded["user_id"])
     unless user
       render json: { error: "unauthorized, user not found!" }, status: :unauthorized
       return

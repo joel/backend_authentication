@@ -48,6 +48,21 @@ RSpec.describe ApplicationController do
         expect(response.parsed_body).to match({ "error" => "unauthorized, invalid token" })
       end
     end
+
+    context "with invalid user" do
+      let(:headers) do
+        {
+          "Authorization" => "Bearer #{JWT.encode({ user_id: 42 }, Rails.application.credentials.secret_key_base, 'HS256')}"
+        }
+      end
+
+      it "does nothing" do
+        expect(Current).not_to receive(:user=)
+        get :index
+        expect(response).to have_http_status(:unauthorized)
+        expect(response.parsed_body).to match({ "error" => "unauthorized, user not found!" })
+      end
+    end
   end
 
   context "without token" do
