@@ -18,6 +18,7 @@ RSpec.describe "/api/v1/users" do
       get api_users_url, headers: valid_headers, as: :json
       expect(response).to be_successful
       expect(response.parsed_body).to match([JSON.parse(user.to_json(only: %i[id name]))])
+      expect(response.headers["X-Acme-Api-Version"]).to be(1.0)
     end
   end
 end
