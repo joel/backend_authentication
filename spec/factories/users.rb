@@ -7,5 +7,15 @@ FactoryBot.define do
     username { FFaker::Internet.unique.user_name }
     password { FFaker::Internet.password }
     password_confirmation { password }
+
+    trait :with_projects do
+      transient do
+        projects_count { 1 }
+      end
+
+      after(:create) do |user, evaluator|
+        create_list(:project, evaluator.projects_count, user:)
+      end
+    end
   end
 end
