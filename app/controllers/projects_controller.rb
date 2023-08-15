@@ -17,7 +17,9 @@ class ProjectsController < ApplicationController
 
   # POST /projects
   def create
-    Projects::Create.new.call(project_params.merge(user_id: Current.user.id)) do |operation|
+    operation_params = project_params.merge(user_id: Current.user.id)
+
+    Projects::CreateOrUpdate.new.call(operation_params.to_h) do |operation|
       operation.success do |project|
         render json: project, status: :created, location: project
       end
@@ -51,6 +53,6 @@ class ProjectsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def project_params
-    params.require(:project).permit(:name, :user_id)
+    params.require(:project).permit(:name, :id)
   end
 end

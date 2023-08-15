@@ -9,7 +9,8 @@ module Projects
     include Dry::Transaction::Operation
 
     def call(input)
-      Param.new.call(input)
+      params = Param.new.call(input)
+      return Failure(params.errors) if params.failure?
 
       Success(input)
     end

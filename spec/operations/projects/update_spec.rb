@@ -6,7 +6,7 @@ module Projects
   RSpec.describe Update do
     let(:project) { create(:project) }
     let(:new_name) { "New name" }
-    let(:attributes) { { name: new_name, id: project.id } }
+    let(:attributes) { { instance: project, input: { name: new_name, id: project.id } } }
 
     subject(:operation) { described_class.new }
 

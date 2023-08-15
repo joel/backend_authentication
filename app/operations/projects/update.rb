@@ -6,13 +6,12 @@ module Projects
   class Update
     include Dry::Transaction::Operation
 
-    def call(input)
-      project = Project.find_by(id: input[:id])
-      return Failure("Project not found") unless project
-
-      project.update!(input)
-
-      Success(project)
+    def call(params)
+      if params[:instance].update(params[:input])
+        Success(params[:instance])
+      else
+        Failure(params[:instance])
+      end
     end
   end
 end

@@ -9,8 +9,12 @@ module Projects
         Projects::Validate.new
       end
 
-      register "create" do
-        Projects::Create.new
+      register "instance" do
+        Projects::Instance.new
+      end
+
+      register "update" do
+        Projects::Update.new
       end
     end
   end
