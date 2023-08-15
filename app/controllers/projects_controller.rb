@@ -1,44 +1,46 @@
 # frozen_string_literal: true
 
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show update destroy]
+  # before_action :set_project, only: %i[show update destroy]
 
-  # GET /projects
-  def index
-    @projects = Project.all
+  # # GET /projects
+  # def index
+  #   @projects = Project.all
 
-    render json: @projects
-  end
+  #   render json: @projects
+  # end
 
-  # GET /projects/1
-  def show
-    render json: @project
-  end
+  # # GET /projects/1
+  # def show
+  #   render json: @project
+  # end
 
   # POST /projects
   def create
-    @project = Project.new(project_params)
+    Projects::Create.new.call(project_params.merge(user_id: Current.user.id)) do |operation|
+      operation.success do |project|
+        render json: project, status: :created, location: project
+      end
 
-    if @project.save
-      render json: @project, status: :created, location: @project
-    else
-      render json: @project.errors, status: :unprocessable_entity
+      operation.failure do |error|
+        render json: error.to_h, status: :unprocessable_entity
+      end
     end
   end
 
-  # PATCH/PUT /projects/1
-  def update
-    if @project.update(project_params)
-      render json: @project
-    else
-      render json: @project.errors, status: :unprocessable_entity
-    end
-  end
+  # # PATCH/PUT /projects/1
+  # def update
+  #   if @project.update(project_params)
+  #     render json: @project
+  #   else
+  #     render json: @project.errors, status: :unprocessable_entity
+  #   end
+  # end
 
-  # DELETE /projects/1
-  def destroy
-    @project.destroy
-  end
+  # # DELETE /projects/1
+  # def destroy
+  #   @project.destroy
+  # end
 
   private
 

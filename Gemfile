@@ -50,3 +50,9 @@ end
 gem "jwt", "~> 2.7"
 
 gem "bcrypt", "~> 3.1"
+
+gem "dry-transaction", "~> 0.15.0"
+
+gem "dry-container", "~> 0.11.0"
+
+gem "dry-validation", "~> 1.10"
