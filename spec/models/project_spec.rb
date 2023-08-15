@@ -3,5 +3,9 @@
 require "rails_helper"
 
 RSpec.describe Project do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context "with validations" do
+    it "is valid with valid attributes" do
+      expect(build(:project)).to be_valid
+    end
+  end
 end

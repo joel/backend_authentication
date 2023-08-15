@@ -14,11 +14,12 @@
 
 ActiveRecord::Schema[7.0].define(version: 20_230_814_110_415) do
   create_table "projects", id: :string, force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.string "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["id"], name: "index_projects_on_id", unique: true
+    t.index %w[name user_id], name: "index_projects_on_name_and_user_id", unique: true
   end
 
   create_table "users", id: :string, force: :cascade do |t|

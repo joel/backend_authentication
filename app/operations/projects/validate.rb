@@ -9,7 +9,12 @@ module Projects
     include Dry::Transaction::Operation
 
     def call(input)
-      params = Param.new.call(input)
+      params = if Project.find_by(id: input[:id])
+                 UpdateContract.new.call(input)
+               else
+                 CreateContract.new.call(input)
+               end
+
       return Failure(params.errors) if params.failure?
 
       Success(input)
