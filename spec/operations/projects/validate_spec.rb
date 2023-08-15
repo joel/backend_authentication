@@ -4,9 +4,7 @@ require "rails_helper"
 
 module Projects
   RSpec.describe Validate do
-    let(:user_id) { SecureRandom.uuid }
-    let(:id) { SecureRandom.uuid }
-    let(:attributes) { attributes_for(:project).merge(user_id:, id:) }
+    let(:attributes) { attributes_for(:project).merge(user_id: SecureRandom.uuid) }
 
     subject(:operation) { described_class.new }
 
