@@ -16,13 +16,6 @@ RSpec.describe "/api/v1/projects" do
   let(:id) { "01H7YRXCXK0M10W3RC045GW000" }
   let(:name) { "Manhattan" }
   let(:project) { create(:project, id:, name:, user:) }
-  let(:valid_attributes) do
-    attributes_for(:project)
-  end
-
-  let(:invalid_attributes) do
-    valid_attributes.merge({ name: "" })
-  end
 
   before { project }
 
@@ -90,9 +83,13 @@ RSpec.describe "/api/v1/projects" do
   end
 
   describe "POST /create" do
+    subject(:create_project_call) do
+      post api_projects_url, params: { project: attributes }, headers: valid_headers, as: :json
+    end
+
     context "with valid parameters" do
-      subject(:create_project_call) do
-        post api_projects_url, params: { project: valid_attributes }, headers: valid_headers, as: :json
+      let(:attributes) do
+        attributes_for(:project)
       end
 
       let(:created_project) { Project.last }
@@ -120,10 +117,10 @@ RSpec.describe "/api/v1/projects" do
         expect(JSON.parse(response.body)).to eql( # rubocop:disable Rails/ResponseParsedBody
           {
             "data" => {
-              "id" => valid_attributes[:id],
+              "id" => attributes[:id],
               "type" => "project",
               "attributes" => {
-                "name" => valid_attributes[:name]
+                "name" => attributes[:name]
               }
             },
             "links" => {
@@ -135,8 +132,8 @@ RSpec.describe "/api/v1/projects" do
     end
 
     context "with invalid parameters" do
-      subject(:create_project_call) do
-        post api_projects_url, params: { project: invalid_attributes }, headers: valid_headers, as: :json
+      let(:attributes) do
+        attributes_for(:project).merge({ name: "" })
       end
 
       it "does not create a new Project" do
