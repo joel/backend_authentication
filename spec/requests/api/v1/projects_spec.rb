@@ -21,7 +21,7 @@ RSpec.describe "/api/v1/projects" do
 
   describe "GET /index" do
     before do
-      get api_projects_url, headers: valid_headers, as: :json
+      get api_projects_url("sort" => "name"), headers: valid_headers, as: :json
     end
 
     it "renders a successful response" do
@@ -33,8 +33,8 @@ RSpec.describe "/api/v1/projects" do
         {
           "meta" => { "total" => 1 },
           "links" => {
-            "self" => "http://www.example.com/api/projects",
-            "current" => "http://www.example.com/api/projects?page[number]=1"
+            "self" => "http://www.example.com/api/projects?sort=name",
+            "current" => "http://www.example.com/api/projects?page[number]=1&sort=name"
           },
           "data" => [
             {
