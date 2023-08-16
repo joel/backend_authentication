@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     end
     scope module: :v1, constraints: ApiVersion.new(1) do
       resources :users, only: :index
+      resources :projects, only: :index
     end
   end
   # end

@@ -2,6 +2,12 @@
 
 module Api
   class ApiController < ApplicationController
+    include JSONAPI::Fetching
+    include JSONAPI::Filtering
+    include JSONAPI::Pagination
+    include JSONAPI::Deserialization
+    include JSONAPI::Errors
+
     before_action :api_version
     after_action :set_version_header
 

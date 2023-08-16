@@ -56,3 +56,7 @@ gem "dry-transaction", "~> 0.15.0"
 gem "dry-container", "~> 0.11.0"
 
 gem "dry-validation", "~> 1.10"
+
+gem "jsonapi.rb", "~> 2.0"
+
+gem "ransack", "~> 4.0"
