@@ -32,7 +32,7 @@ module Api
       end
 
       def update
-        if @project.update(update_project_params)
+        if @project.update(jsonapi_deserialize(params, only: [:name]))
           render jsonapi: @project, status: :ok, location: @project
         else
           render jsonapi_errors: @project.errors, status: :unprocessable_entity
@@ -44,11 +44,6 @@ module Api
       # Only allow a list of trusted parameters through.
       def create_project_params
         params.require(:project).permit(:name, :id)
-      end
-
-      # Only allow a list of trusted parameters through.
-      def update_project_params
-        params.require(:project).permit(:name)
       end
 
       def jsonapi_meta(resources)

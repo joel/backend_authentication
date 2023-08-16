@@ -173,9 +173,28 @@ RSpec.describe "/api/v1/projects" do
 
   describe "PUT /update" do
     subject(:update_project_call) do
-      put api_project_url(project), params: { project: { name: new_name } }, headers: valid_headers, as: :json
+      put api_project_url(project), params: attributes, headers: valid_headers, as: :json
     end
 
+    let(:attributes) do
+      {
+        data: {
+          id: project.id,
+          type: "project",
+          attributes: {
+            name: new_name
+          },
+          relationships: {
+            user: {
+              data: {
+                type: "user",
+                id: user.id
+              }
+            }
+          }
+        }
+      }
+    end
     let(:project) { create(:project, user:) }
     let(:id) { project.id }
 
