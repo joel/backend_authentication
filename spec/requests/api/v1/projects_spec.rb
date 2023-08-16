@@ -14,8 +14,9 @@ RSpec.describe "/api/v1/projects" do
       }
     end
 
+    let(:id) { "01H7YRXCXK0M10W3RC045GW000" }
+
     context "with project" do
-      let(:id) { "01H7YRXCXK0M10W3RC045GW000" }
       let(:name) { "Manhattan" }
       let(:project) { create(:project, id:, name:, user:) }
 
@@ -92,7 +93,7 @@ RSpec.describe "/api/v1/projects" do
         let(:attributes) do
           {
             data: {
-              id: project.id,
+              id:,
               type: "project",
               attributes: {
                 name: new_name
@@ -108,10 +109,6 @@ RSpec.describe "/api/v1/projects" do
             }
           }
         end
-        let(:project) { create(:project, user:) }
-        let(:id) { project.id }
-
-        before { project }
 
         context "with valid parameters" do
           let(:new_name) { "Brooklyn" }
@@ -177,8 +174,6 @@ RSpec.describe "/api/v1/projects" do
         subject(:create_project_call) do
           post api_projects_url, params: attributes, headers: valid_headers, as: :json
         end
-
-        let(:id) { ArUlid.configuration.generator.generate_id }
 
         let(:attributes) do
           {
