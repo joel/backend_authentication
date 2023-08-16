@@ -21,7 +21,7 @@ module Api
       end
 
       def create
-        project = Project.new(create_project_params)
+        project = Project.new(jsonapi_deserialize(params, only: %i[id name]))
         project.user_id = Current.user.id
 
         if project.save
@@ -40,11 +40,6 @@ module Api
       end
 
       private
-
-      # Only allow a list of trusted parameters through.
-      def create_project_params
-        params.require(:project).permit(:name, :id)
-      end
 
       def jsonapi_meta(resources)
         { total: resources.count } if resources.respond_to?(:count)
