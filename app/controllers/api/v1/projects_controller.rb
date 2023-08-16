@@ -3,6 +3,8 @@
 module Api
   module V1
     class ProjectsController < ApiController
+      before_action :set_project, only: %i[show update]
+
       def index
         allowed = %i[id name]
         options = { sort_with_expressions: true }
@@ -15,7 +17,7 @@ module Api
       end
 
       def show
-        render jsonapi: Project.find(params[:id])
+        render jsonapi: @project
       end
 
       def create
@@ -29,11 +31,24 @@ module Api
         end
       end
 
+      def update
+        if @project.update(update_project_params)
+          render jsonapi: @project, status: :ok, location: @project
+        else
+          render jsonapi_errors: @project.errors, status: :unprocessable_entity
+        end
+      end
+
       private
 
       # Only allow a list of trusted parameters through.
       def create_project_params
         params.require(:project).permit(:name, :id)
+      end
+
+      # Only allow a list of trusted parameters through.
+      def update_project_params
+        params.require(:project).permit(:name)
       end
 
       def jsonapi_meta(resources)
@@ -43,6 +58,10 @@ module Api
       # The default implementation return ::ProjectSerializer
       def jsonapi_serializer_class(_resource, _is_collection)
         ::Api::V1::ProjectSerializer
+      end
+
+      def set_project
+        @project = Project.find(params[:id])
       end
     end
   end

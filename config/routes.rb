@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     end
     scope module: :v1, constraints: ApiVersion.new(1) do
       resources :users, only: :index
-      resources :projects, only: %i[index show create]
+      resources :projects, only: %i[index show create update]
     end
   end
   # end

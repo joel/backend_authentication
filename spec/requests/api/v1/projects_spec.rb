@@ -170,4 +170,72 @@ RSpec.describe "/api/v1/projects" do
       end
     end
   end
+
+  describe "PUT /update" do
+    subject(:update_project_call) do
+      put api_project_url(project), params: { project: { name: new_name } }, headers: valid_headers, as: :json
+    end
+
+    let(:project) { create(:project, user:) }
+    let(:id) { project.id }
+
+    before { project }
+
+    context "with valid parameters" do
+      let(:new_name) { "Brooklyn" }
+
+      it "renders a JSON response with the new project" do
+        update_project_call
+        expect(response).to have_http_status(:ok)
+        expect(response.content_type).to match(a_string_including("application/vnd.api+json"))
+      end
+
+      it "renders a valid JSON" do
+        update_project_call
+
+        expect(JSON.parse(response.body)).to eql( # rubocop:disable Rails/ResponseParsedBody
+          {
+            "data" => {
+              "id" => id,
+              "type" => "project",
+              "attributes" => {
+                "name" => "Brooklyn"
+              }
+            },
+            "links" => {
+              "self" => "http://www.example.com/api/projects/#{id}"
+            }
+          }
+        )
+      end
+    end
+
+    context "with invalid parameters" do
+      let(:new_name) { "" }
+
+      it "renders a JSON response with errors for the new project" do
+        update_project_call
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.content_type).to match(a_string_including("application/vnd.api+json"))
+      end
+
+      it "renders a valid JSON" do
+        update_project_call
+
+        expect(JSON.parse(response.body)).to eql( # rubocop:disable Rails/ResponseParsedBody
+          {
+            "errors" => [
+              {
+                "status" => "422",
+                "source" => { "pointer" => "/data/attributes/name" },
+                "title" => "Unprocessable Entity",
+                "detail" => "Name can't be blank",
+                "code" => "blank"
+              }
+            ]
+          }
+        )
+      end
+    end
+  end
 end
