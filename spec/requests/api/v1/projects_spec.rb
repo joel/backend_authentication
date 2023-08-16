@@ -54,4 +54,31 @@ RSpec.describe "/api/v1/projects" do
       expect(response.headers["X-Acme-Api-Version"]).to be(1.0)
     end
   end
+
+  describe "GET /show" do
+    before do
+      get api_project_url(project), headers: valid_headers, as: :json
+    end
+
+    it "renders a successful response" do
+      expect(response).to be_successful
+    end
+
+    it "renders a valid JSON" do
+      expect(JSON.parse(response.body)).to eql( # rubocop:disable Rails/ResponseParsedBody
+        {
+          "data" => {
+            "id" => "01H7YRXCXK0M10W3RC045GW000",
+            "type" => "project",
+            "attributes" => {
+              "name" => "Manhattan"
+            }
+          },
+          "links" => {
+            "self" => "http://www.example.com/api/projects/01H7YRXCXK0M10W3RC045GW000"
+          }
+        }
+      )
+    end
+  end
 end

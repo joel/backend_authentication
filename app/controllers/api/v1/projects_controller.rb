@@ -14,6 +14,10 @@ module Api
         end
       end
 
+      def show
+        render jsonapi: Project.find(params[:id])
+      end
+
       private
 
       def jsonapi_meta(resources)
