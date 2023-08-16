@@ -11,6 +11,8 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    action_policy (0.6.5)
+      ruby-next-core (>= 0.14.0)
     actioncable (7.0.6)
       actionpack (= 7.0.6)
       activesupport (= 7.0.6)
@@ -274,6 +276,7 @@ GEM
       rubocop (~> 1.33)
       rubocop-capybara (~> 2.17)
       rubocop-factory_bot (~> 2.22)
+    ruby-next-core (0.15.3)
     ruby-progressbar (1.13.0)
     sqlite3 (1.6.3-arm64-darwin)
     thor (1.2.2)
@@ -291,6 +294,7 @@ PLATFORMS
   arm64-darwin-22
 
 DEPENDENCIES
+  action_policy (~> 0.6.5)
   ar_ulid!
   bcrypt (~> 3.1)
   bootsnap

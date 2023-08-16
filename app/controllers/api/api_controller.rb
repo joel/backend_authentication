@@ -11,6 +11,11 @@ module Api
     before_action :api_version
     after_action :set_version_header
 
+    include ActionPolicy::Controller
+    authorize :user, through: :current_user
+
+    verify_authorized except: :index
+
     protected
 
     def api_version

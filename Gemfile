@@ -60,3 +60,5 @@ gem "dry-validation", "~> 1.10"
 gem "jsonapi.rb", "~> 2.0"
 
 gem "ransack", "~> 4.0"
+
+gem "action_policy", "~> 0.6.5"

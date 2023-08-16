@@ -9,7 +9,9 @@ module Api
         allowed = %i[id name]
         options = { sort_with_expressions: true }
 
-        jsonapi_filter(Project.all, allowed, options) do |filtered|
+        authorized_collection = authorized_scope(Project.all, type: :relation)
+
+        jsonapi_filter(authorized_collection, allowed, options) do |filtered|
           jsonapi_paginate(filtered.result) do |paginated|
             render jsonapi: paginated
           end
@@ -17,10 +19,14 @@ module Api
       end
 
       def show
+        authorize!
+
         render jsonapi: @project
       end
 
       def create
+        authorize!
+
         project = Project.new(jsonapi_deserialize(params, only: %i[id name]))
         project.user_id = Current.user.id
 
@@ -32,6 +38,8 @@ module Api
       end
 
       def update
+        authorize! @project
+
         if @project.update(jsonapi_deserialize(params, only: [:name]))
           render jsonapi: @project, status: :ok, location: @project
         else

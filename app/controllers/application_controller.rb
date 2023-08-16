@@ -9,6 +9,10 @@ class ApplicationController < ActionController::API
     render json: { error: e.message }, status: :not_found
   end
 
+  def current_user
+    Current.user
+  end
+
   private
 
   def authenticate_request
