@@ -50,7 +50,7 @@ module BackendAuthentication
                                request_specs: true
 
       generator.fixture_replacement :factory_bot, dir: "spec/factories"
-      generator.orm :active_record, primary_key_type: :uuid
+      generator.orm :active_record #, primary_key_type: :uuid
       generator.template_engine :erb
       # generator.scaffold_controller :api_controller
     end
