@@ -11,7 +11,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   def index
     @<%= plural_table_name %> = <%= orm_class.all(class_name) %>
 
-    render jsonapi: <%= "@#{plural_table_name}" %>
+    render jsonapi: <%= "@#{plural_table_name}" %>, status: :ok
   end
 
   # GET <%= route_url %>/<UUID>
