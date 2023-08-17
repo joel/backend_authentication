@@ -46,9 +46,13 @@ module BackendAuthentication
                                view_specs: true,
                                helper_specs: true,
                                routing_specs: true,
-                               controller_specs: true,
+                               controller_specs: false,
                                request_specs: true
+
       generator.fixture_replacement :factory_bot, dir: "spec/factories"
+      generator.orm :active_record, primary_key_type: :uuid
+      generator.template_engine :erb
+      # generator.scaffold_controller :api_controller
     end
   end
 end
