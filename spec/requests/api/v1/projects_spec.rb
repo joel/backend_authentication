@@ -3,8 +3,12 @@
 require "rails_helper"
 
 RSpec.describe "/api/v1/projects" do
+  before do
+    travel_to Date.new(2004, 11, 24)
+  end
+
   context "without authorization" do
-    let(:user) { create(:user) }
+    let(:user) { create(:user, id: "01H7YRXCXK0M10W3RC045GW001") }
 
     let(:valid_headers) do
       {
@@ -41,10 +45,19 @@ RSpec.describe "/api/v1/projects" do
               },
               "data" => [
                 {
-                  "attributes" =>
-                    {
-                      "name" => "Manhattan"
-                    },
+                  "attributes" => {
+                    "name" => "Manhattan",
+                    "created_at" => "2004-11-24T00:00:00.000Z",
+                    "updated_at" => "2004-11-24T00:00:00.000Z"
+                  },
+                  "relationships" => {
+                    "user" => {
+                      "data" => {
+                        "id" => "01H7YRXCXK0M10W3RC045GW001",
+                        "type" => "user"
+                      }
+                    }
+                  },
                   "id" => "01H7YRXCXK0M10W3RC045GW000",
                   "type" => "project"
                 }
@@ -74,7 +87,17 @@ RSpec.describe "/api/v1/projects" do
                 "id" => "01H7YRXCXK0M10W3RC045GW000",
                 "type" => "project",
                 "attributes" => {
-                  "name" => "Manhattan"
+                  "name" => "Manhattan",
+                  "created_at" => "2004-11-24T00:00:00.000Z",
+                  "updated_at" => "2004-11-24T00:00:00.000Z"
+                },
+                "relationships" => {
+                  "user" => {
+                    "data" => {
+                      "id" => "01H7YRXCXK0M10W3RC045GW001",
+                      "type" => "user"
+                    }
+                  }
                 }
               },
               "links" => {
@@ -128,7 +151,17 @@ RSpec.describe "/api/v1/projects" do
                   "id" => id,
                   "type" => "project",
                   "attributes" => {
-                    "name" => "Brooklyn"
+                    "name" => "Brooklyn",
+                    "created_at" => "2004-11-24T00:00:00.000Z",
+                    "updated_at" => "2004-11-24T00:00:00.000Z"
+                  },
+                  "relationships" => {
+                    "user" => {
+                      "data" => {
+                        "id" => "01H7YRXCXK0M10W3RC045GW001",
+                        "type" => "user"
+                      }
+                    }
                   }
                 },
                 "links" => {
@@ -197,7 +230,6 @@ RSpec.describe "/api/v1/projects" do
 
         context "with valid parameters" do
           let(:name) { "Brooklyn" }
-
           let(:created_project) { Project.last }
 
           it "creates a new Project" do
@@ -226,7 +258,17 @@ RSpec.describe "/api/v1/projects" do
                   "id" => id,
                   "type" => "project",
                   "attributes" => {
-                    "name" => name
+                    "name" => name,
+                    "created_at" => "2004-11-24T00:00:00.000Z",
+                    "updated_at" => "2004-11-24T00:00:00.000Z"
+                  },
+                  "relationships" => {
+                    "user" => {
+                      "data" => {
+                        "id" => "01H7YRXCXK0M10W3RC045GW001",
+                        "type" => "user"
+                      }
+                    }
                   }
                 },
                 "links" => {

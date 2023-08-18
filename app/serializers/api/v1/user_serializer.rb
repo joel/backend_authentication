@@ -2,18 +2,20 @@
 
 module Api
   module V1
-    class ProjectSerializer
+    class UserSerializer
       include JSONAPI::Serializer
 
-      set_type :project
+      set_type :user
       set_id :id
 
       attributes :name
+      attributes :email
+      attributes :username
 
       attributes :created_at
       attributes :updated_at
 
-      belongs_to :user
+      has_many :projects
     end
   end
 end
