@@ -32,7 +32,7 @@ class ProjectsController < ApplicationController
 
   # PATCH/PUT /projects/1
   def update
-    operation_params = create_project_params.merge(id: params[:id])
+    operation_params = update_project_params.merge(id: params[:id])
 
     Projects::CreateOrUpdate.new.call(operation_params.to_h) do |operation|
       operation.success do |project|
