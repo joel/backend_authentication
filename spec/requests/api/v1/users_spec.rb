@@ -16,6 +16,8 @@ RSpec.describe "/api/v1/users" do
       )
     end
 
+    let(:project) { create(:project, id: "01H7YRXCXK0M10W3RC045GW000", name: "Manhattan", user:) }
+
     let(:valid_headers) do
       {
         "Authorization" => "Bearer #{JWT.encode({ user_id: user.id }, Rails.application.credentials.secret_key_base, 'HS256')}",
@@ -23,6 +25,8 @@ RSpec.describe "/api/v1/users" do
         "Accept" => "application/x-api-v1+json"
       }
     end
+
+    before { project }
 
     context "with user" do
       describe "GET /index" do
@@ -48,7 +52,12 @@ RSpec.describe "/api/v1/users" do
                   },
                   "relationships" => {
                     "projects" => {
-                      "data" => []
+                      "data" => [
+                        {
+                          "id" => "01H7YRXCXK0M10W3RC045GW000",
+                          "type" => "project"
+                        }
+                      ]
                     }
                   }
                 }
