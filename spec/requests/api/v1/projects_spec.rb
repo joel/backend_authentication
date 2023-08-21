@@ -7,7 +7,7 @@ RSpec.describe "/api/v1/projects" do
     travel_to Date.new(2004, 11, 24)
   end
 
-  context "without authorization" do
+  context "with an authenticated user" do
     let(:user) { create(:user, id: "01H7YRXCXK0M10W3RC045GW001") }
 
     let(:valid_headers) do

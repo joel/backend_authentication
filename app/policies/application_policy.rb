@@ -3,6 +3,8 @@
 class ApplicationPolicy < ActionPolicy::Base
   authorize :user
 
+  scope_for :all, &:all
+
   scope_for :relation do |relation|
     relation.where(user:)
   end
