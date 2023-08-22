@@ -138,6 +138,7 @@ RSpec.describe "/api/v1/projects" do
                           "updated_at" => "2004-11-24T00:00:00.000Z"
                         },
                         "relationships" => {
+                          "deliverables" => { "data" => [] },
                           "user" => {
                             "data" => {
                               "id" => "01H7YRXCXK0M10W3RC045GW001", "type" => "user"
@@ -175,6 +176,7 @@ RSpec.describe "/api/v1/projects" do
                           "updated_at" => "2004-11-24T00:00:00.000Z"
                         },
                         "relationships" => {
+                          "deliverables" => { "data" => [] },
                           "user" => {
                             "data" => {
                               "id" => "01H7YRXCXK0M10W3RC045GW002", "type" => "user"
@@ -218,6 +220,7 @@ RSpec.describe "/api/v1/projects" do
                       "updated_at" => "2004-11-24T00:00:00.000Z"
                     },
                     "relationships" => {
+                      "deliverables" => { "data" => [] },
                       "user" => {
                         "data" => {
                           "id" => "01H7YRXCXK0M10W3RC045GW001",
@@ -260,6 +263,7 @@ RSpec.describe "/api/v1/projects" do
                   "updated_at" => "2004-11-24T00:00:00.000Z"
                 },
                 "relationships" => {
+                  "deliverables" => { "data" => [] },
                   "user" => {
                     "data" => {
                       "id" => "01H7YRXCXK0M10W3RC045GW001",
@@ -324,6 +328,7 @@ RSpec.describe "/api/v1/projects" do
                     "updated_at" => "2004-11-24T00:00:00.000Z"
                   },
                   "relationships" => {
+                    "deliverables" => { "data" => [] },
                     "user" => {
                       "data" => {
                         "id" => "01H7YRXCXK0M10W3RC045GW001",
@@ -431,6 +436,7 @@ RSpec.describe "/api/v1/projects" do
                     "updated_at" => "2004-11-24T00:00:00.000Z"
                   },
                   "relationships" => {
+                    "deliverables" => { "data" => [] },
                     "user" => {
                       "data" => {
                         "id" => "01H7YRXCXK0M10W3RC045GW001",

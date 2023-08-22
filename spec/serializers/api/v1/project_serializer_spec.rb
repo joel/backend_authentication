@@ -37,11 +37,13 @@ module Api
               "id" => "01H7YRXCXK0M10W3RC045GW000",
               "type" => "project",
               "relationships" => {
+                "deliverables" => { "data" => [] },
                 "user" => {
                   "data" => {
                     "id" => "01H7YRXCXK0M10W3RC045GW001",
                     "type" => "user"
                   }
+
                 }
               }
             }

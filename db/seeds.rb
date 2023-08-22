@@ -11,16 +11,22 @@
 user = FactoryBot.create(:user, name: "John", email: "john.doe@acme.com", password: "123456", password_confirmation: "123456")
 
 "A".upto("E") do |letter|
-  FactoryBot.create(:project, name: "Project #{letter}", user:)
+  project = FactoryBot.create(:project, name: "Project #{letter}", user:)
+  5.times do |_i|
+    FactoryBot.create(:deliverable, name: "Deliverable #{letter}", project:)
+  end
 end
 
 %w[Peter Steven Karl].each do |name|
   user = FactoryBot.create(:user, name:, email: "#{name.downcase}@acme.com", password: "123456", password_confirmation: "123456")
   last_project = Project.last
-  cursor = last_project.name
+  cursor = last_project.name.match(/Project ([A-Z])/)[1]
   5.times do |_i|
     next_letter = cursor.next
-    FactoryBot.create(:project, name: "Project #{next_letter}", user:)
+    project = FactoryBot.create(:project, name: "Project #{next_letter}", user:)
+    5.times do |_i|
+      FactoryBot.create(:deliverable, name: "Deliverable #{next_letter}", project:)
+    end
     cursor = next_letter
   end
 end

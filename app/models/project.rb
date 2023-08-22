@@ -2,14 +2,17 @@
 
 class Project < ApplicationRecord
   has_ulid
+
   belongs_to :user
+  has_many :deliverables, inverse_of: :project, dependent: :destroy
+
   validates :name, presence: true, uniqueness: { scope: :user_id }
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[created_at id name updated_at]
+    %w[id name created_at updated_at]
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    ["user"]
+    %w[user deliverables]
   end
 end
