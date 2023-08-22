@@ -6,10 +6,11 @@ module Api
       before_action :set_project, only: %i[show update]
 
       def index
-        allowed = %i[id name]
+        allowed = %i[id name user_name]
         options = { sort_with_expressions: true }
 
-        authorized_collection = authorized_scope(Project.all, type: :relation)
+        # authorized_collection = authorized_scope(Project.all, type: :relation)
+        authorized_collection = Project.all
 
         jsonapi_filter(authorized_collection, allowed, options) do |filtered|
           jsonapi_paginate(filtered.result) do |paginated|
