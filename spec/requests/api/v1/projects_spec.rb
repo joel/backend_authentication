@@ -23,51 +23,74 @@ RSpec.describe "/api/v1/projects" do
     context "with project" do
       let(:name) { "Manhattan" }
       let(:project) { create(:project, id:, name:, user:) }
+      let(:json_api_options) { {} }
 
       before { project }
 
       describe "GET /index" do
-        before do
-          get api_projects_url("sort" => "name"), headers: valid_headers, as: :json
+        subject(:request) do
+          get api_projects_url(json_api_options), headers: valid_headers, as: :json
         end
 
-        it "renders a successful response" do
-          expect(response).to be_successful
+        context "with a collection of projects" do
+          let(:json_api_options) { { sort: "name" } }
+
+          before do
+            project.update(name: "A")
+            create(:project, name: "B", user:)
+            create(:project, name: "C", user:)
+
+            request
+          end
+
+          it "renders a valid JSON" do
+            expect(
+              JSON.parse(response.body)["data"].map { |e| e["attributes"]["name"] }
+            ).to eql(%w[A B C])
+          end
         end
 
-        it "renders a valid JSON" do
-          expect(JSON.parse(response.body)).to eql( # rubocop:disable Rails/ResponseParsedBody
-            {
-              "meta" => { "total" => 1 },
-              "links" => {
-                "self" => "http://www.example.com/api/projects?sort=name",
-                "current" => "http://www.example.com/api/projects?page[number]=1&sort=name"
-              },
-              "data" => [
-                {
-                  "attributes" => {
-                    "name" => "Manhattan",
-                    "created_at" => "2004-11-24T00:00:00.000Z",
-                    "updated_at" => "2004-11-24T00:00:00.000Z"
-                  },
-                  "relationships" => {
-                    "user" => {
-                      "data" => {
-                        "id" => "01H7YRXCXK0M10W3RC045GW001",
-                        "type" => "user"
+        context "when no pagination" do
+          before { request }
+
+          it "renders a successful response" do
+            expect(response).to be_successful
+          end
+
+          it "renders a valid JSON" do
+            expect(JSON.parse(response.body)).to eql(
+              {
+                "meta" => { "total" => 1 },
+                "links" => {
+                  "self" => "http://www.example.com/api/projects",
+                  "current" => "http://www.example.com/api/projects?page[number]=1"
+                },
+                "data" => [
+                  {
+                    "attributes" => {
+                      "name" => "Manhattan",
+                      "created_at" => "2004-11-24T00:00:00.000Z",
+                      "updated_at" => "2004-11-24T00:00:00.000Z"
+                    },
+                    "relationships" => {
+                      "user" => {
+                        "data" => {
+                          "id" => "01H7YRXCXK0M10W3RC045GW001",
+                          "type" => "user"
+                        }
                       }
-                    }
-                  },
-                  "id" => "01H7YRXCXK0M10W3RC045GW000",
-                  "type" => "project"
-                }
-              ]
-            }
-          )
-        end
+                    },
+                    "id" => "01H7YRXCXK0M10W3RC045GW000",
+                    "type" => "project"
+                  }
+                ]
+              }
+            )
+          end
 
-        it "renders Response Header API Versio" do
-          expect(response.headers["X-Acme-Api-Version"]).to be(1.0)
+          it "renders Response Header API Versio" do
+            expect(response.headers["X-Acme-Api-Version"]).to be(1.0)
+          end
         end
       end
 
@@ -81,7 +104,7 @@ RSpec.describe "/api/v1/projects" do
         end
 
         it "renders a valid JSON" do
-          expect(JSON.parse(response.body)).to eql( # rubocop:disable Rails/ResponseParsedBody
+          expect(JSON.parse(response.body)).to eql(
             {
               "data" => {
                 "id" => "01H7YRXCXK0M10W3RC045GW000",
@@ -145,7 +168,7 @@ RSpec.describe "/api/v1/projects" do
           it "renders a valid JSON" do
             update_project_call
 
-            expect(JSON.parse(response.body)).to eql( # rubocop:disable Rails/ResponseParsedBody
+            expect(JSON.parse(response.body)).to eql(
               {
                 "data" => {
                   "id" => id,
@@ -184,7 +207,7 @@ RSpec.describe "/api/v1/projects" do
           it "renders a valid JSON" do
             update_project_call
 
-            expect(JSON.parse(response.body)).to eql( # rubocop:disable Rails/ResponseParsedBody
+            expect(JSON.parse(response.body)).to eql(
               {
                 "errors" => [
                   {
@@ -252,7 +275,7 @@ RSpec.describe "/api/v1/projects" do
           it "renders a valid JSON" do
             create_project_call
 
-            expect(JSON.parse(response.body)).to eql( # rubocop:disable Rails/ResponseParsedBody
+            expect(JSON.parse(response.body)).to eql(
               {
                 "data" => {
                   "id" => id,
@@ -297,7 +320,7 @@ RSpec.describe "/api/v1/projects" do
           it "renders a valid JSON" do
             create_project_call
 
-            expect(JSON.parse(response.body)).to eql( # rubocop:disable Rails/ResponseParsedBody
+            expect(JSON.parse(response.body)).to eql(
               {
                 "errors" => [
                   {
