@@ -33,20 +33,34 @@ RSpec.describe "/api/v1/projects" do
         end
 
         context "with a collection of projects" do
-          let(:json_api_options) { { sort: "name" } }
-
           before do
             project.update(name: "A")
             create(:project, name: "B", user:)
             create(:project, name: "C", user:)
-
-            request
           end
 
-          it "renders a valid JSON" do
-            expect(
-              JSON.parse(response.body)["data"].map { |e| e["attributes"]["name"] }
-            ).to eql(%w[A B C])
+          context "when sorted by name asc" do
+            let(:json_api_options) { { sort: "name" } }
+
+            before { request }
+
+            it "renders projects in alphabetic order" do
+              expect(
+                JSON.parse(response.body)["data"].map { |e| e["attributes"]["name"] }
+              ).to eql(%w[A B C])
+            end
+          end
+
+          context "when sorted by name desc" do
+            let(:json_api_options) { { sort: "-name" } }
+
+            before { request }
+
+            it "renders projects in alphabetic order" do
+              expect(
+                JSON.parse(response.body)["data"].map { |e| e["attributes"]["name"] }
+              ).to eql(%w[A B C].reverse)
+            end
           end
         end
 
