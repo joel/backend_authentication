@@ -27,6 +27,7 @@ jobs:
           gem install rubocop-rake
           gem install rubocop-rspec
           gem install rubocop-gitlab-security
+          gem install rubocop-rails
           rubocop --parallel
 
   ci:
