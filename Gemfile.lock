@@ -1,13 +1,3 @@
-PATH
-  remote: ../../../../Gems/ArUlid/ar_ulid
-  specs:
-    ar_ulid (0.1.0)
-      activerecord
-      activesupport
-      rails
-      railties
-      zeitwerk
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -78,6 +68,12 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    ar_ulid (0.1.0)
+      activerecord
+      activesupport
+      rails
+      railties
+      zeitwerk
     ast (2.4.2)
     base64 (0.1.1)
     bcrypt (3.1.19)
@@ -295,7 +291,7 @@ PLATFORMS
 
 DEPENDENCIES
   action_policy (~> 0.6.5)
-  ar_ulid!
+  ar_ulid
   bcrypt (~> 3.1)
   bootsnap
   dry-container (~> 0.11.0)
