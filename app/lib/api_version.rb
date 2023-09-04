@@ -3,6 +3,7 @@
 class ApiVersion
   DEFAULT_VERSION = 1
   API_REGEXP = %r{application/x-api-v(?<version>\d+(?<minor>\.\d*)?)\+json}
+  # application/vnd.github.v3+json
 
   def initialize(version)
     @version = version
