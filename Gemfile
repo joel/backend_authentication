@@ -29,7 +29,7 @@ gem "bootsnap", require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem "rack-cors"
 
-gem "ar_ulid", path: "~/WorkSpace/Gems/ArUlid/ar_ulid"
+gem "ar_ulid"
 gem "ulid"
 
 group :development, :test do
